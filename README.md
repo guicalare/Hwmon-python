@@ -31,8 +31,21 @@ Let's see an example of comparisons between lm-sensors and hwmon:
 ![](https://github.com/Guillermo-C-A/Hwmon-python/blob/master/rd_data/hwmon%20vs%20lm-sensors.png)
 
 **Note:** to see the information of the previous example, you have to uncomment the line of:
+
 ```
 #Hwmon(). print_data() 
+```
+
+# Real-time monitoring of sensors 
+
+You can monitor in real time all of the sensors and other components with the help of watch and python. 
+
+![]()
+
+To do this, uncomment the sentence from Hwmon(). print_data() and execute the following sentence in your terminal:
+
+```
+watch "python3 hwmon.py"
 ```
 
 # Available sensors and calls 
