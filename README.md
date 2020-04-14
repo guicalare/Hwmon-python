@@ -29,6 +29,11 @@ Let's see an example of comparisons between lm-sensors and hwmon:
 
 ![](https://github.com/Guillermo-C-A/Hwmon-python/blob/master/rd_data/hwmon%20vs%20lm-sensors.png)
 
+**Note:** to see the information of the previous example, you have to uncomment the line of:
+```
+#Hwmon(). print_data() 
+```
+
 # Available sensors and calls 
 
 ## Sensor information: 
