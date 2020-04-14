@@ -40,7 +40,7 @@ Let's see an example of comparisons between lm-sensors and hwmon:
 
 You can monitor in real time all of the sensors and other components with the help of watch and python. 
 
-![]()
+![](https://github.com/Guillermo-C-A/Hwmon-python/blob/master/rd_data/hwmon%20videos/cpu_watch_example.mp4)
 
 To do this, uncomment the sentence from Hwmon(). print_data() and execute the following sentence in your terminal:
 
