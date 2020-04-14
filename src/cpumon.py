@@ -75,7 +75,7 @@ class CPUmon():
         return info
 
     def print_data(self):
-    
+        print('Ctrl + C to exit the watch mode\n')
         print_dict(self.data(), indent=0)
 
 # Uncomment the following sentence to get a json from the data 

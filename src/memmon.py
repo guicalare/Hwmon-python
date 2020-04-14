@@ -34,7 +34,7 @@ class MEMmon():
         return dict(data)
 
     def print_data(self):
-    
+        print('Ctrl + C to exit the watch mode\n')
         print_dict(self.data(), indent=0)
 
     def convert_to_mb(self, byte_size):
