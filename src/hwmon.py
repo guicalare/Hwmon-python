@@ -1,7 +1,7 @@
 # Script for python 3
 
 import os
-import timeit
+from utils import print_dict
 
 class Hwmon():
 
@@ -50,7 +50,7 @@ class Hwmon():
         elif file_.lower().startswith('pwm'):
             return label_name, str(int(value)/255) + ' PWM (%)'
         elif file_.lower().startswith('temp'):
-            return label_name, str(int(value)/1000) + ' ºC'
+            return label_name, str(int(value)/1000) + ' C'
         elif file_.lower().startswith('curr'):
             return label_name, str(int(value)/1000) + ' a'
         elif file_.lower().startswith('power'):
@@ -96,12 +96,7 @@ class Hwmon():
     
     def print_data(self):
 
-        data = self.data()
-
-        for key in data.keys():
-            print(key)
-            for sub_key in data[key].keys():
-                print('\t',' ',sub_key,' ', data[key][sub_key])
+        print_dict(self.data(), indent=0)
 
 # Uncomment the following sentence to get a json from the data 
 #print(Hwmon().data())

@@ -1,3 +1,5 @@
+from utils import print_dict
+
 class MEMmon():
 
     '''
@@ -27,15 +29,13 @@ class MEMmon():
         data = list(map(manipulate_data,data))
         
         for i in range(len(data)):
-            data[i][1] = float(data[i][1])
+            data[i][1] = self.convert_to_mb(float(data[i][1]))
 
         return dict(data)
 
     def print_data(self):
     
-        data = self.data()
-        for key in data.keys():
-            print(key, ' ', self.convert_to_mb(data[key]))
+        print_dict(self.data(), indent=0)
 
     def convert_to_mb(self, byte_size):
         """

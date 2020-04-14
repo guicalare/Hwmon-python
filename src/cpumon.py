@@ -1,3 +1,5 @@
+from utils import print_dict
+
 class CPUmon():
 
     '''
@@ -74,14 +76,7 @@ class CPUmon():
 
     def print_data(self):
     
-        data = self.data()
-        for key in data.keys():
-            print(key)
-            if type(data[key])==list:
-                for i in data[key]:
-                    print('\t',i)
-            else:
-                print('\t',data[key])
+        print_dict(self.data(), indent=0)
 
 # Uncomment the following sentence to get a json from the data 
 #print(CPUmon().data())
