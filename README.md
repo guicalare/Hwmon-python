@@ -2,7 +2,10 @@
 
 With the collaboration of Bla6: [Bla6 Gitlab](https://gitlab.com/bla6)
 
-**Important**: these scripts do not work in virtual machines 
+# Important 
+
+- these scripts do not work in virtual machines 
+- the information shown by both hwmon and lm-sensors depends on the sensors available to the orderer and even on the component manufacturers
 
 # What is Hwmon 
 
@@ -23,6 +26,8 @@ Most of the other libraries require ls-sensors to be installed or use C librarie
 Hwmon shows the same as lm-sensors but with different names in some cases. This will be solved in future updates of the library. 
 
 Let's see an example of comparisons between lm-sensors and hwmon: 
+
+![](https://github.com/Guillermo-C-A/Hwmon-python/blob/master/rd_data/hwmon%20vs%20lm-sensors.png)
 
 # Available sensors and calls 
 
