@@ -6,6 +6,13 @@ With the collaboration of Bla6: [Bla6 Gitlab](https://gitlab.com/bla6)
 
 - these scripts do not work in virtual machines 
 - the information shown by both hwmon and lm-sensors depends on the sensors available to the orderer and even on the component manufacturers
+- Support this project by marking it with a star and giving us ideas/bug reports/etc. . . We are open to ideas and suggestions :) 
+
+# Future updates
+
+In the next big updates a graphical interface will be added via cli to be able to group all the information of the system.
+
+Once it is stable, it will move to an interface via GUI and a web, so that you can see the same information in three different ways 
 
 # What is Hwmon 
 
