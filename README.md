@@ -4,6 +4,8 @@ With the collaboration of Bla6: [Bla6 Gitlab](https://gitlab.com/bla6)
 
 **Important**: these scripts do not work in virtual machines 
 
+# What is Hwmon 
+
 **Hwmon** is a collection of Python 3 scripts which are a native Python solution for obtaining information from Linux system sensors. Currently it is still under development and the idea is to group in the same library the same lm-sensors and psutil functions without having to install anything in the system. 
 
 All the information used in this library is the same information handled by both lm-sensors and psutil (or that is what it is intended to do, so there may be some small differences). At the moment the data extracted from the system are: 
@@ -12,9 +14,21 @@ All the information used in this library is the same information handled by both
 - **Processor information** (from /proc/cpuinfo and /proc/stat) 
 - **System memory information** (from /proc/meminfo) 
 
-As far as execution and data collection are concerned, we have: 
+# Why use this library instead of others? 
+
+Most of the other libraries require ls-sensors to be installed or use C libraries to call data APIs. While with Hwmon you won't have to install anything or fight with other languages/dependencies or APIs, since Hwmon reads directly the system files and the only library it uses is "os" so it doesn't require any previous installation or other languages.
+
+# Does it show the same thing as lm-sensors? 
+
+Hwmon shows the same as lm-sensors but with different names in some cases. This will be solved in future updates of the library. 
+
+Let's see an example of comparisons between lm-sensors and hwmon: 
+
+# Available sensors and calls 
 
 ## Sensor information: 
+
+As far as execution and data collection are concerned, we have: 
 
 - **Print the information** 
 
