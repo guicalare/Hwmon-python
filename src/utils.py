@@ -23,6 +23,8 @@ def is_vm():
     try:
         subprocess.check_output('dmesg |grep -i hypervisor', shell=True)
         print("Running under VM environment")
+        print("""Information displayed by Hwmon when running
+         the code in a virtual machine may be incomplete""")
         return True
     except:
         print("Not running under VM environment")

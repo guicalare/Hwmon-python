@@ -24,6 +24,8 @@ All the information used in this library is the same information handled by both
 - **Processor information** (from /proc/cpuinfo and /proc/stat) 
 - **System memory information** (from /proc/meminfo) 
 - **Network information** (from /proc/net/dev)
+- **USB devices** (from /dev/input/by-id)
+- **Disk devices** (from /dev/disk/by-id)
 
 # Why use this library instead of others? 
 
@@ -275,4 +277,50 @@ As far as execution and data collection are concerned, we have:
 >>> import netmon
 >>> netmon.NETmon().data()
 {'docker0': {'receive': {'bytes': 0, 'packets': 0, 'errs': 0, 'drop': 0, 'fifo': 0, 'frame': 0, 'compressed': 0, 'multicast': 0}, 'transmit': {'bytes': 0, 'packets': 0, 'errs': 0, 'drop': 0, 'fifo': 0, 'colls': 0, 'carrier': 0}}, '    lo': {'receive': {'bytes': 1505999, 'packets': 13803, 'errs': 0, 'drop': 0, 'fifo': 0, 'frame': 0, 'compressed': 0, 'multicast': 0}, 'transmit': {'bytes': 13803, 'packets': 0, 'errs': 0, 'drop': 0, 'fifo': 0, 'colls': 0, 'carrier': 0}}, 'enp37s0': {'receive': {'bytes': 134343470, 'packets': 155096, 'errs': 0, 'drop': 0, 'fifo': 0, 'frame': 0, 'compressed': 0, 'multicast': 1489}, 'transmit': {'bytes': 131526, 'packets': 0, 'errs': 0, 'drop': 0, 'fifo': 0, 'colls': 0, 'carrier': 0}}}
+```
+
+## USB devices: 
+
+- **Print the information** 
+
+```python
+>>> import usb_devices
+>>> usb_devices.Devices().print_data()
+usb-Logitech_Gaming_Mouse_G300-mouse
+usb-Logitech_Gaming_Mouse_G300-if01
+usb-Logitech_Gaming_Mouse_G300
+usb-CHICONY_USB_Keyboard
+```
+
+- **Extract the information in a dictionary**
+
+```python
+>>> import usb_devices
+>>> usb_devices.Devices().data()
+['usb-Logitech_Gaming_Mouse_G300-mouse', 'usb-Logitech_Gaming_Mouse_G300-if01', 'usb-Logitech_Gaming_Mouse_G300', 'usb-CHICONY_USB_Keyboard']
+```
+
+## Disks devices: 
+
+- **Print the information** 
+
+```python
+>>> import disk_devices
+>>> disk_devices.Devices().print_data()
+usb-TOSHIBA_TransMemory_0060E056B626E22180003A1B-0:0
+wwn-0x50014ee20b769657
+ata-TOSHIBA-TL100_27NB51GCKSZU
+ata-WDC_WD3200BEVT-22ZCT0_WD-WXEY08F45384
+wwn-0x50014ee202380e97
+wwn-0x500080dc007530e0
+ata-WDC_WD20EZRX-22D8PB0_WD-WCC4M1ZJ83JD
+```
+
+- **Extract the information in a dictionary**
+
+```python
+>>> import disk_devices
+>>> disk_devices.Devices().data()
+['usb-TOSHIBA_TransMemory_0060E056B626E22180003A1B-0:0', 'wwn-0x50014ee20b769657', 'ata-TOSHIBA-TL100_27NB51GCKSZU', 'ata-WDC_WD3200BEVT-22ZCT0_WD-WXEY08F45384', 'wwn-0x50014ee202380e97', 'wwn-0x500080dc007530e0', 'ata-WDC_WD20EZRX-22D8PB0_WD-WCC4M1ZJ83JD']
+
 ```
