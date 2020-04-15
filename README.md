@@ -29,7 +29,7 @@ Where you need files and programs to be able to work, so if you're missing some 
 
 Yes. Hwmon is able to return and print the same information that is obtained when installing and running sensors. 
 
-![https://github.com/Guillermo-C-A/Hwmon-python/blob/master/rd_data/hwmon%20vs%20lm-sensors.png](attachment:imagen.png)
+![https://github.com/Guillermo-C-A/Hwmon-python/blob/master/rd_data/hwmon vs lm-sensors.png](attachment:imagen.png)
 
 And it even prints the information on the screen in a nice and friendly way so that it is more useful and easy to understand. 
 
