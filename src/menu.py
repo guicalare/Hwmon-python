@@ -7,9 +7,7 @@ class Menu():
     def __init__(self):
 
         print("\033c")
-        if is_vm():
-            print('Puede que la salida de algunos sensores sea incompleta')
-            self.vm_host = True
+        is_vm()
 
     def user_input(self, options):
 
@@ -17,7 +15,7 @@ class Menu():
 
         while user not in options.keys():
             print_dict(options)
-            user = input('>>> Opcion: ')
+            user = input('>>> Option: ')
             print("\033c")
         
         return user
@@ -25,7 +23,7 @@ class Menu():
     def menu(self):
 
         options = {'1':'Sensors data', '2':'CPU data', '3':'Memory data',
-                    '4':'Network data', '5':'Salir'}
+                    '4':'Network data', '5':'Exit'}
         
         user = self.user_input(options)
 
