@@ -45,6 +45,16 @@ Let's see an example of comparisons between lm-sensors and hwmon:
 #Hwmon(). print_data() 
 ```
 
+# New cli for Hwmon! 
+
+Now you can run the menu.py script to run the Hwmon monitoring menu.
+
+```
+python3 menu.py
+```
+
+![](https://github.com/Guillermo-C-A/Hwmon-python/blob/master/rd_data/rd_gifs/menu_demo.gif)
+
 # Real-time monitoring of sensors 
 
 You can monitor in real time all of the sensors and other components with the help of watch and python. 
