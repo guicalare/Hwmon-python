@@ -548,5 +548,11 @@ In case we are interested in getting the information from the sensors instead of
 
 
 ```python
-
+disk.data()
 ```
+    ['wwn-0x500080dc007530e0',
+     'ata-WDC_WD3200BEVT-22ZCT0_WD-WXEY08F45384',
+     'ata-TOSHIBA-TL100_27NB51GCKSZU',
+     'wwn-0x50014ee202380e97',
+     'wwn-0x50014ee20b769657',
+     'ata-WDC_WD20EZRX-22D8PB0_WD-WCC4M1ZJ83JD']

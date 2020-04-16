@@ -1,4 +1,5 @@
 import subprocess
+import warnings
 
 # Inspiration: https://stackoverflow.com/a/45953420
 # Adapted to python3
@@ -22,10 +23,9 @@ def is_vm():
     """
     try:
         subprocess.check_output('dmesg |grep -i hypervisor', shell=True)
-        print("Running under VM environment")
-        print("""Information displayed by Hwmon when running
+        warnings.warn("Running under VM environment")
+        warnings.warn("""Information displayed by Hwmon when running
          the code in a virtual machine may be incomplete""")
         return True
     except:
-        print("Not running under VM environment")
         return False

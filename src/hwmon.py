@@ -1,9 +1,12 @@
 # Script for python 3
 
 import os
-from utils import print_dict
+from utils import *
 
 class Hwmon():
+
+    def __init__(self):
+        is_vm()
 
     class HW():
 
