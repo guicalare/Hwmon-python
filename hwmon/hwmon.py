@@ -3,7 +3,7 @@
 import os
 from utils import print_dict
 
-class Hwmon():
+class HWmon():
 
     '''
     Class that reads Hwmon data (sys/class/hwmon) and only return
