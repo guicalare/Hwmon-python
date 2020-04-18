@@ -16,15 +16,19 @@ setup(
     author='Guillermo-C-A',
     author_email='guillcal@ucm.es',
     url='https://github.com/Guillermo-C-A/Hwmon-python',
-    download_url='https://github.com/user/reponame/archive/v_01.tar.gz',
-    keywords=['info', 'system_info', 'hardware_monitor'],
+    download_url='https://github.com/bla6-apm/Hwmon-python/archive/0.7.tar.gz',
+    keywords=['system_info', 'hardware_monitor', 'monitoring', 'hardware', 'sensors'],
     install_requires=[],
     classifiers=[
         'Development Status :: 4 - Beta',
         'Intended Audience :: Developers',
-        'Topic :: Software Development :: Build Tools',
+        'Operating System :: POSIX :: Linux'
+        'Topic :: System',
+        'Topic :: System :: Hardware',
+        'Topic :: System :: Monitoring',
         'License :: OSI Approved :: GNU General Public License v3.0',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.6',
     ],
+    python_requires=">=3.6",
 )
