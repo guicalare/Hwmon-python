@@ -1,7 +1,7 @@
 # Script for python 3
 
 import os
-from utils import *
+from utils import is_vm, print_dict
 
 class Hwmon():
 
@@ -12,40 +12,40 @@ class Hwmon():
 
         def __init__(self):
             self.master_path = '/sys/class/hwmon'
-        
+
         def extract_data(self, sub_folder_path, file_):
 
-            if os.path.exists(os.path.join(sub_folder_path,file_.split('_')[0]+'_label')):
+            if os.path.exists(os.path.join(sub_folder_path, file_.split('_')[0] + '_label')):
 
-                label_name = file_.split('_')[0]+'_label'
+                label_name = file_.split('_')[0] + '_label'
 
-                file = open(os.path.join(sub_folder_path,label_name), 'r')
+                file = open(os.path.join(sub_folder_path, label_name), 'r')
                 label_name = file.read().strip()
                 file.close()
-                file = open(os.path.join(sub_folder_path,file_), 'r')
+                file = open(os.path.join(sub_folder_path, file_), 'r')
                 value = file.read().strip()
-                file.close()   
+                file.close()
 
             else:
 
                 label_name = file_.split('_')[0]
-                file = open(os.path.join(sub_folder_path,file_), 'r')
+                file = open(os.path.join(sub_folder_path, file_), 'r')
                 value = file.read().strip()
                 file.close()
-            
+
             # See https://www.kernel.org/doc/Documentation/hwmon/sysfs-interface
             if file_.lower().startswith('in'):
-                return label_name, str(int(value)/1000) + ' v'
+                return label_name, str(int(value) / 1000) + ' v'
             elif file_.lower().startswith('fan'):
                 return label_name, value + ' RPM'
             elif file_.lower().startswith('pwm'):
-                return label_name, str(int(value)/255) + ' PWM (%)'
+                return label_name, str(int(value) / 255) + ' PWM (%)'
             elif file_.lower().startswith('temp'):
-                return label_name, str(int(value)/1000) + ' C'
+                return label_name, str(int(value) / 1000) + ' C'
             elif file_.lower().startswith('curr'):
-                return label_name, str(int(value)/1000) + ' a'
+                return label_name, str(int(value) / 1000) + ' a'
             elif file_.lower().startswith('power'):
-                return label_name, str(int(value)/1000000) + ' w'
+                return label_name, str(int(value) / 1000000) + ' w'
 
         def data(self):
 
@@ -54,13 +54,12 @@ class Hwmon():
             folders = os.listdir(self.master_path)
 
             for folder in folders:
-                    
-                
-                sub_folder_path = os.path.join(self.master_path,folder)
+
+                sub_folder_path = os.path.join(self.master_path, folder)
 
                 files = os.listdir(sub_folder_path)
 
-                name = open(os.path.join(sub_folder_path,'name'), 'r')
+                name = open(os.path.join(sub_folder_path, 'name'), 'r')
                 name_key = name.read().strip()
                 name.close()
 
@@ -71,12 +70,10 @@ class Hwmon():
                     try:
 
                         if '_input' in file_:
-
                             label_name, value = self.extract_data(sub_folder_path, file_)
                             data[name_key][label_name] = value
-                        
-                        if '_average' in file_:
 
+                        if '_average' in file_:
                             label_name, value = self.extract_data(sub_folder_path, file_)
                             data[name_key][label_name] = value
 
@@ -84,24 +81,24 @@ class Hwmon():
                         pass
 
             return data
-        
+
         def print_data(self):
             print_dict(self.data(), indent=0)
-    
+
     class CPU():
 
         def __init__(self):
 
             self.path = '/proc/cpuinfo'
-        
+
         def raw_data(self):
 
             data_file = open(self.path, 'r')
             data = data_file.readlines()
             data_file.close()
 
-            manipulate_data = lambda data: data.strip().replace('\t','').split(': ')
-            data = list(map(manipulate_data,data))
+            manipulate_data = lambda data: data.strip().replace('\t', '').split(': ')
+            data = list(map(manipulate_data, data))
 
             return data
 
@@ -109,7 +106,7 @@ class Hwmon():
         def cpu_usage(self):
 
             last_idle = last_total = 0
-            
+
             with open('/proc/stat') as f:
                 fields = [float(column) for column in f.readline().strip().split()[1:]]
 
@@ -125,8 +122,8 @@ class Hwmon():
             data = self.raw_data()
             mhz_sum, cont = 0, 0
 
-            info = {'Name':'', 'CPU_usage':round(self.cpu_usage(),2),
-                    'cores':'', 'threads':''
+            info = {'Name': '', 'CPU_usage': round(self.cpu_usage(), 2),
+                    'cores': '', 'threads': ''
                     }
 
             for line in data:
@@ -144,12 +141,12 @@ class Hwmon():
                     else:
                         pass
 
-            info['Average_MHz'] = round(mhz_sum/cont, 2)
+            info['Average_MHz'] = round(mhz_sum / cont, 2)
 
             return info
 
         def print_data(self):
-            print_dict(self.data(), indent=0)      
+            print_dict(self.data(), indent=0)
 
     class MEM():
 
@@ -163,9 +160,9 @@ class Hwmon():
             data = data_file.readlines()
             data_file.close()
 
-            manipulate_data = lambda data: data.strip().replace('\t','').replace(' ','').replace('kB','').split(':')
-            data = list(map(manipulate_data,data))
-            
+            manipulate_data = lambda data: data.strip().replace('\t', '').replace(' ', '').replace('kB', '').split(':')
+            data = list(map(manipulate_data, data))
+
             for i in range(len(data)):
                 data[i][1] = self.convert_to_mb(float(data[i][1]))
 
@@ -208,14 +205,14 @@ class Hwmon():
 
             size_to_return = _fix_size(current_size, size_index)
             measure = MEASURE[size_index]
-            return size_to_return + measure  
-    
+            return size_to_return + measure
+
     class NET():
 
         def __init__(self):
 
             self.path = '/proc/net/dev'
-        
+
         def data(self):
 
             def remove_spaces(list_data):
@@ -223,57 +220,51 @@ class Hwmon():
                 while '' in list_data:
                     list_data.remove('')
 
-                return list_data    
+                return list_data
 
             data_file = open(self.path, 'r')
             data = data_file.readlines()[1:]
             data_file.close()
 
             info = dict()
-            receive, transmit = remove_spaces(data[0].split('|')[1].split(' ')), remove_spaces(data[0].split('|')[2].strip().split(' '))
-            
-            for value in data[1:]:
+            receive, transmit = remove_spaces(data[0].split('|')[1].split(' ')), remove_spaces(
+                data[0].split('|')[2].strip().split(' '))
 
+            for value in data[1:]:
                 aux = value.split(':')
-                name, stats = aux[0], list(map(int,remove_spaces(aux[1].strip().split(' '))))
+                name, stats = aux[0], list(map(int, remove_spaces(aux[1].strip().split(' '))))
 
                 info[name] = dict()
-                info[name]['receive'] = dict(zip(receive,stats[:8]))
-                info[name]['transmit'] = dict(zip(transmit,stats[9:]))
-            
+                info[name]['receive'] = dict(zip(receive, stats[:8]))
+                info[name]['transmit'] = dict(zip(transmit, stats[9:]))
+
             return info
-        
+
         def print_data(self):
             print_dict(self.data(), indent=0)
 
     class USB():
 
         def __init__(self):
-
             self.path = '/dev/input/by-id'
 
         def data(self):
-
             devices = list(map(lambda data: data.split('-event')[0], os.listdir(self.path)))
             return list(set(devices))
-        
-        def print_data(self):
 
+        def print_data(self):
             for device in self.data():
                 print(device)
 
     class DISK():
 
         def __init__(self):
-
             self.path = '/dev/disk/by-id'
 
         def data(self):
-
             devices = list(map(lambda data: data.split('-part')[0], os.listdir(self.path)))
             return list(set(devices))
-        
-        def print_data(self):
 
+        def print_data(self):
             for device in self.data():
                 print(device)

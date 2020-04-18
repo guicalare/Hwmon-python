@@ -1,0 +1,1 @@
+from hwmon.hwmon import Hwmon
