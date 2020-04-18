@@ -4,6 +4,14 @@
 
 **Repository:**
 
+[PyPI url](https://pypi.org/project/hwmon/#description)
+
+# Install Hwmon
+
+```
+pip install hwmon
+```
+
 ## Motivations to create Hwmon 
 
 Hwmon has been created with the intention of replacing Linux libraries and APIs with which to obtain system information without the need to depend on dependencies outside a standard Linux system, i. e. that nothing needs to be installed. 
