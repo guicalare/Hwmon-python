@@ -1,1 +1,1 @@
-from hwmon.hwmon import HWmon
+from hwmon.hwmon import Hwmon
