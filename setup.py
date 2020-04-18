@@ -22,11 +22,11 @@ setup(
     classifiers=[
         'Development Status :: 4 - Beta',
         'Intended Audience :: Developers',
-        'Operating System :: POSIX :: Linux'
+        'Operating System :: POSIX :: Linux',
         'Topic :: System',
         'Topic :: System :: Hardware',
         'Topic :: System :: Monitoring',
-        'License :: OSI Approved :: GNU General Public License v3.0',
+        'License :: OSI Approved :: GNU General Public License v3 (GPLv3)',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.6',
     ],
