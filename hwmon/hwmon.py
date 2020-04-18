@@ -1,7 +1,7 @@
 # Script for python 3
 
 import os
-from utils import is_vm, print_dict
+from hwmon.utils import is_vm, print_dict
 
 class Hwmon():
 
