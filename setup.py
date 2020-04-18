@@ -16,7 +16,7 @@ setup(
     author='Guillermo-C-A',
     author_email='guillcal@ucm.es',
     url='https://github.com/Guillermo-C-A/Hwmon-python',
-    download_url='https://github.com/user/reponame/archive/v_01.tar.gz',
+    download_url='https://github.com/bla6-apm/Hwmon-python/archive/0.7.tar.gz',
     keywords=['info', 'system_info', 'hardware_monitor'],
     install_requires=[],
     classifiers=[
