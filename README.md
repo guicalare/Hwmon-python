@@ -1,8 +1,8 @@
 # Hwmon's Documentation
 
-**Authors:** bla6 and Guillermo-C-A
-
 ![](https://github.com/Guillermo-C-A/Hwmon-python/blob/master/HWmon2.png)
+
+**Authors:** bla6 and Guillermo-C-A
 
 **Repository:**
 
