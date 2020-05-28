@@ -2,6 +2,8 @@
 
 **Authors:** bla6 and Guillermo-C-A
 
+![](https://github.com/Guillermo-C-A/Hwmon-python/blob/master/HWmon2.png)
+
 **Repository:**
 
 [PyPI url](https://pypi.org/project/hwmon/#description)
