@@ -14,6 +14,12 @@
 pip install hwmon
 ```
 
+# New data available 
+
+Now you can get information about the GPU and the BIOS of your computer. For more information, read how to use the new features in this README 
+
+![](https://github.com/Guillermo-C-A/Hwmon-python/blob/master/rd_data/GPU.png)
+
 ## Motivations to create Hwmon 
 
 Hwmon has been created with the intention of replacing Linux libraries and APIs with which to obtain system information without the need to depend on dependencies outside a standard Linux system, i. e. that nothing needs to be installed. 
@@ -25,9 +31,9 @@ The only requirements for running Hwmon on a system are:
 
 Hwmon is also a library developed expressly by and for Python 3 with functions that are easy to understand and operate, which read and synthesize in the same library all the useful information for monitoring a Linux system that can be found in the /ys, /proc and /dev folders. So only the information that the system itself has recorded will be obtained. 
 
-## Why use Hwmon instead of other bookstores? 
+## Why use Hwmon instead of other library? 
 
-As already mentioned, Hwmon does not require any dependencies or programs and is a library created with the standard Python 3 libraries. Which is not the case with other bookstores as they are: 
+As already mentioned, Hwmon does not require any dependencies or programs and is a library created with the standard Python 3 libraries. Which is not the case with other library as they are: 
 
 - Pysensors
 - lm-sensors
@@ -63,7 +69,7 @@ All this information is extracted respectively from the following sites:
 - /dev/input/by-id
 - /dev/disk/by-id
 
-## How to use and call the bookstore? 
+## How to use and call the library? 
 
 
 ```python
@@ -435,10 +441,6 @@ In case we are interested in getting the information from the network instead of
 ```python
 net.data()
 ```
-
-
-
-
     {'    lo': {'receive': {'bytes': 7605359,
        'packets': 14503,
        'errs': 0,
@@ -517,10 +519,6 @@ In case we are interested in getting the information from the sensors instead of
 ```python
 usb.data()
 ```
-
-
-
-
     ['usb-Logitech_Gaming_Mouse_G300-mouse',
      'usb-CHICONY_USB_Keyboard',
      'usb-Logitech_Gaming_Mouse_G300',
@@ -567,3 +565,95 @@ disk.data()
      'wwn-0x50014ee202380e97',
      'wwn-0x50014ee20b769657',
      'ata-WDC_WD20EZRX-22D8PB0_WD-WCC4M1ZJ83JD']
+
+# GPU information 
+To access the GPU subclass, the following statement will be executed: 
+
+
+```python
+gpu = Hwmon.GPU()
+```
+
+Being the functions that interest us in this case: data() and print_data() . Let's see an example of each function: 
+### Print information
+This function will print all the information of the GPU in a tabular and nice way. 
+
+
+```python
+gpu.print_data()
+```
+    amdgpudrmfb
+         Resolution 1680x1050p
+         gpu_busy_percent 0 %
+         mem_info_vram_used 361.31MB
+         current_link_width 16
+         mem_info_vis_vram_used 46.77MB
+         mem_info_vis_vram_total 256.00MB
+         current_link_speed 8 GT/s
+         mem_busy_percent 19 %
+         mem_info_gtt_used 52.29MB
+         mem_info_vram_total 8.00GB
+         vbios_version 113-C9403100_101
+         mem_info_gtt_total 5.83GB
+
+### Get data
+In case we are interested in getting the information from the gpu instead of printing it on the screen, we will execute the following sentence: 
+
+```python
+gpu.data()
+```
+    {'amdgpudrmfb':
+    {'Resolution': '1680x1050p',
+    'gpu_busy_percent': '0 %',
+    'mem_info_vram_used': '367.23MB',
+    'current_link_width': '16',
+    'mem_info_vis_vram_used': '46.77MB',
+    'mem_info_vis_vram_total': '256.00MB',
+    'current_link_speed': '8 GT/s',
+    'mem_busy_percent': '19 %',
+    'mem_info_gtt_used': '56.88MB',
+    'mem_info_vram_total': '8.00GB',
+    'vbios_version': '113-C9403100_101',
+    'mem_info_gtt_total': '5.83GB'}}
+
+# BIOS information 
+To access the BIOS subclass, the following statement will be executed: 
+
+
+```python
+bios = Hwmon.BIOS()
+```
+
+Being the functions that interest us in this case: data() and print_data() . Let's see an example of each function: 
+### Print information
+This function will print all the information of the GPU in a tabular and nice way. 
+
+
+```python
+bios.print_data()
+```
+    bios_date 12/20/2018
+    bios_version P5.50
+    board_vendor ASRock
+    chassis_type 3
+    bios_vendor American Megatrends Inc.
+    board_asset_tag 
+    board_version 
+    board_name AB350M-HDV
+
+
+### Get data
+In case we are interested in getting the information from the gpu instead of printing it on the screen, we will execute the following sentence: 
+
+```python
+bios.data()
+```
+    {'bios_date': '12/20/2018',
+    'bios_version': 'P5.50',
+    'board_vendor': 'ASRock',
+    'chassis_type': '3',
+    'bios_vendor': 'American Megatrends Inc.',
+    'board_asset_tag': '',
+    'board_version': '',
+    'board_name': 'AB350M-HDV'}
+

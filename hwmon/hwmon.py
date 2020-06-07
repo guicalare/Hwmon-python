@@ -268,3 +268,139 @@ class Hwmon():
         def print_data(self):
             for device in self.data():
                 print(device)
+
+    class GPU():
+
+        def __init__(self):
+            self.master_path = "/sys/class/graphics/"
+
+        def convert_to_mb(self, byte_size):
+            """
+                ref: https://gist.github.com/Pobux/0c474672b3acd4473d459d3219675ad8
+                A bit is the smallest unit, it's either 0 or 1
+                1 byte = 1 octet = 8 bits
+                1 kB = 1 kilobyte = 1000 bytes = 10^3 bytes
+                1 KiB = 1 kibibyte = 1024 bytes = 2^10 bytes
+                1 KB = 1 kibibyte OR kilobyte ~= 1024 bytes ~= 2^10 bytes (it usually means 1024 bytes but sometimes it's 1000... ask the sysadmin ;) )
+                1 kb = 1 kilobits = 1000 bits (this notation should not be used, as it is very confusing)
+                1 ko = 1 kilooctet = 1000 octets = 1000 bytes = 1 kB
+                Also Kb seems to be a mix of KB and kb, again it depends on context.
+                In linux, a byte (B) is composed by a sequence of bits (b). One byte has 256 possible values.
+                More info : http://www.linfo.org/byte.html
+                """
+            BASE_SIZE = 1024.00
+            MEASURE = ["B", "KB", "MB", "GB", "TB", "PB"]
+
+            def _fix_size(size, size_index):
+                if not size:
+                    return "0"
+                elif size_index == 0:
+                    return str(size)
+                else:
+                    return "{:.2f}".format(size)
+
+            current_size = byte_size
+            size_index = 0
+
+            while current_size >= BASE_SIZE and len(MEASURE) != size_index:
+                current_size = current_size / BASE_SIZE
+                size_index = size_index + 1
+
+            size_to_return = _fix_size(current_size, size_index)
+            measure = MEASURE[size_index]
+            return size_to_return + measure
+
+        def data(self):
+
+            data = dict()
+
+            folders = os.listdir(self.master_path)
+
+            for folder in folders:
+
+                sub_folder_path = os.path.join(self.master_path, folder)
+
+                files = os.listdir(sub_folder_path)
+
+                if "name" in files:
+
+                    name = open(os.path.join(sub_folder_path, 'name'), 'r')
+                    name_key = name.read().strip()
+                    name.close()
+
+                    data[name_key] = dict()
+
+                    resolution_file = open(os.path.join(sub_folder_path, 'virtual_size'), 'r')
+                    resolution = resolution_file.read().strip().replace(',','x') + "p"
+                    resolution_file.close()
+
+                    data[name_key]["Resolution"] = resolution
+
+                    sub_folder_path = os.path.join(self.master_path, folder, "device")
+                    files = os.listdir(sub_folder_path)
+
+                    for file in files:
+
+                        if "current_link" in file or "busy" in file or "mem_" in file or "bios" in file:
+
+                            data_file = open(os.path.join(sub_folder_path, file), 'r')
+                            data_read = data_file.read().strip()
+                            data_file.close()
+                            
+                            if "mem_" in file and "percent" not in file:
+                                data_read = self.convert_to_mb(int(data_read))
+                            if "percent" in file:
+                                data_read = data_read + " %"
+                            data[name_key][file] = data_read
+            
+            return data
+
+        def print_data(self):
+            print_dict(self.data(), indent=0)
+
+    class BIOS():
+
+        def __init__(self):
+
+            self.master_path = "/sys/class/dmi/id/"
+        
+        def data(self):
+
+            data = dict()
+
+            files = os.listdir(self.master_path)
+
+            for file in files:
+
+                if "bios" in file or "board" in file or "chassis" in file or "product" in file or "vendor" in file:
+                    try:
+                        data_file = open(os.path.join(self.master_path, file), 'r')
+                        data_read = data_file.read().strip()
+                        data_file.close()
+                        
+                        if "To Be Filled By O.E.M." not in data_read:
+                            data[file] = data_read
+                    except Exception:
+                        pass
+            
+            return data
+
+        def print_data(self):
+            print_dict(self.data(), indent=0)
+
+#print(Hwmon().HW().data())
+#print(Hwmon().HW().print_data())
+#print(Hwmon().CPU().data())
+#print(Hwmon().CPU().print_data())
+#print(Hwmon().MEM().data())
+#print(Hwmon().MEM().print_data())
+#print(Hwmon().NET().data())
+#print(Hwmon().NET().print_data())
+#print(Hwmon().USB().data())
+#print(Hwmon().USB().print_data())
+#print(Hwmon().DISK().data())
+#print(Hwmon().DISK().print_data())
+#print(Hwmon().GPU().data())
+#print(Hwmon().GPU().print_data())
+#print(Hwmon().BIOS().data())
+#print(Hwmon().BIOS().print_data())
