@@ -1,7 +1,9 @@
 # Script for python 3
 
 import os
-from hwmon.utils import is_vm, print_dict
+#from hwmon.utils import is_vm, print_dict
+from utils import is_vm, print_dict
+import subprocess
 
 class Hwmon():
 
@@ -104,16 +106,25 @@ class Hwmon():
 
         # See https://rosettacode.org/wiki/Linux_CPU_utilization#Python
         def cpu_usage(self):
-
-            last_idle = last_total = 0
-
+            
+            try:
+                file = open("cpu.txt", "r")
+                data = file.read().strip().split(";")
+                last_idle, last_total = float(data[0]), float(data[1])
+                file.close()
+            except Exception:
+                last_idle, last_total = 0, 0
+            
             with open('/proc/stat') as f:
                 fields = [float(column) for column in f.readline().strip().split()[1:]]
-
             idle, total = fields[3], sum(fields)
             idle_delta, total_delta = idle - last_idle, total - last_total
             last_idle, last_total = idle, total
             utilisation = 100.0 * (1.0 - idle_delta / total_delta)
+            
+            file = open("cpu.txt", "w")
+            file.write(str(last_idle) + ";" + str(last_total))
+            file.close()
 
             return utilisation
 
@@ -123,8 +134,9 @@ class Hwmon():
             mhz_sum, cont = 0, 0
 
             info = {'Name': '', 'CPU_usage': round(self.cpu_usage(), 2),
-                    'cores': '', 'threads': ''
+                    'cores': '', 'threads': '', 'cpu MHz':{}
                     }
+            info["Max MHz"] = int(subprocess.getstatusoutput(f"lscpu | grep 'CPU MHz'")[1].split("\n")[1].split(":")[1].replace("                        ","").split(",")[0])
 
             for line in data:
 
@@ -132,6 +144,7 @@ class Hwmon():
                     if line[0] == 'model name' and info['Name'] == '':
                         info['Name'] = line[1]
                     elif line[0] == 'cpu MHz':
+                        info['cpu MHz'][cont] = float(line[1])
                         mhz_sum = mhz_sum + float(line[1])
                         cont = cont + 1
                     elif line[0] == 'siblings' and info['threads'] == '':
