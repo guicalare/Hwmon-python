@@ -1,8 +1,11 @@
 # Script for python 3
 
 import os
-#from hwmon.utils import is_vm, print_dict
-from utils import is_vm, print_dict
+try:
+    from utils import is_vm, print_dict
+except Exception:
+    from hwmon.utils import is_vm, print_dict
+
 import subprocess
 
 class Hwmon():
@@ -343,11 +346,8 @@ class Hwmon():
 
                     data[name_key] = dict()
 
-                    resolution_file = open(os.path.join(sub_folder_path, 'virtual_size'), 'r')
-                    resolution = resolution_file.read().strip().replace(',','x') + "p"
-                    resolution_file.close()
-
-                    data[name_key]["Resolution"] = resolution
+                    data[name_key]["Name"] = subprocess.getstatusoutput("lspci -v | egrep -i --color 'vga|3d|2d'")[1].split(":")[2]
+                    data[name_key]["Resolution"] = subprocess.getstatusoutput("xdpyinfo  | grep 'dimensions:'")[1].split(":")[1].replace("    ","")
 
                     sub_folder_path = os.path.join(self.master_path, folder, "device")
                     files = os.listdir(sub_folder_path)
