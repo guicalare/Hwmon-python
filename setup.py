@@ -37,4 +37,5 @@ setup(
         'Programming Language :: Python :: 3.6',
     ],
     python_requires=">=3.6",
+    scripts=['bin/hwmon-cli']
 )

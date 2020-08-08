@@ -1,2 +1,8 @@
 # Default ignored files
 .idea*
+.vscode/launch.json
+build/*
+*.txt
+dist/*
+hwmon/__pycache__/
+bin/__pycache__/

@@ -1,0 +1,76 @@
+#!/usr/bin/env python
+
+import sys, getopt
+from hwmon import Hwmon
+
+def main():
+	try:
+		opts, args = getopt.getopt(sys.argv[1:], 'cmbnsudhv', ['cpu', 'memory', 'bios', 'network', 'sensors', 'usb', 'disk', 'help', 'version'])
+	except getopt.GetoptError as err:
+		print(err)
+		usage()
+		sys.exit(2)
+	if len(opts) == 0:
+		usage()
+	
+	if any('-h' in opt for opt in opts) or any('--help' in opt for opt in opts):
+		usage()
+	if any('-v' in opt for opt in opts) or any('--version' in opt for opt in opts):
+		version()
+	
+	for o, a in opts:
+		if o == '-c' or o == '--cpu':
+			print('\033[1;32mCPU:\033[00m')
+			cpu = Hwmon.CPU()
+			cpu.print_data()
+			print('\n')
+		elif o == '-m' or o == '--memory':
+			print('\033[1;32mMEMORY:\033[00m')
+			memory = Hwmon.MEM()
+			memory.print_data()
+			print('\n')
+		elif o == '-b' or o == '--bios':
+			print('\033[1;32mBIOS:\033[00m')
+			bios = Hwmon.BIOS()
+			bios.print_data()
+			print('\n')
+		elif o == '-n' or o == '--network':
+			print('\033[1;32mNETWORK:\033[00m')
+			net = Hwmon.NET()
+			net.print_data()
+			print('\n')
+		elif o == '-s' or o == '--sensors':
+			print('\033[1;32mSENSORS:\033[00m')
+			sensors = Hwmon.HW()
+			sensors.print_data()
+			print('\n')
+		elif o == '--usb':
+			print('\033[1;32mUSB:\033[00m')
+			usb = Hwmon.USB()
+			usb.print_data()
+			print('\n')
+		elif o == '-d' or o == '--disk':
+			print('\033[1;32mDISK(S):\033[00m')
+			disk = Hwmon.DISK()
+			disk.print_data()
+			print('\n')
+
+def usage():
+	print('Hwmon 0.9')
+	print('How to use:')
+	print(sys.argv[0] + ' [--cpu] [--gpu] [--memory] [--bios] [--network] [--sensors] [--usb] [--disk]')
+	print('--cpu: Show info of the CPU.')
+	print('--memory: Show info of the memory (RAM).')
+	print('--bios: Show info of the bios.')
+	print('--network: Show info of your network connection(s).')
+	print('--sensors: Show info of the sensors avaliable, such CPU and GPU.')
+	print('--usb: Show all devices connected on the USB ports.')
+	print('--disk: Show info of all internal hard disks/SSD.')
+	exit()
+
+def version():
+	print('Hwmon 0.9')
+	exit()
+
+if __name__ == "__main__":
+    main()
