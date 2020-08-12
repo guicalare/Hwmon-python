@@ -107,8 +107,8 @@ class Hwmon():
                 
             return data
 
-        def print_data(self):
-            print_dict(self.data(), indent=0)
+        def print_data(self, colors=False):
+            print_dict(self.data(), indent=0, colors=colors)
 
     class CPU():
 
@@ -181,8 +181,8 @@ class Hwmon():
 
             return info
 
-        def print_data(self):
-            print_dict(self.data(), indent=0)
+        def print_data(self, colors=False):
+            print_dict(self.data(), indent=0, colors=colors)
 
     class MEM():
 
@@ -204,8 +204,8 @@ class Hwmon():
 
             return dict(data)
 
-        def print_data(self):
-            print_dict(self.data(), indent=0)
+        def print_data(self, colors=False):
+            print_dict(self.data(), indent=0, colors=colors)
 
         def convert_to_mb(self, byte_size):
             """
@@ -276,8 +276,8 @@ class Hwmon():
 
             return info
 
-        def print_data(self):
-            print_dict(self.data(), indent=0)
+        def print_data(self, colors=False):
+            print_dict(self.data(), indent=0, colors=colors)
 
     class USB():
 
@@ -407,8 +407,8 @@ class Hwmon():
                     print(e)
                     pass
 
-        def print_data(self):
-            print_dict(self.data(), indent=0)
+        def print_data(self, colors=False):
+            print_dict(self.data(), indent=0, colors=colors)
 
     class BIOS():
 
@@ -437,8 +437,8 @@ class Hwmon():
             
             return data
 
-        def print_data(self):
-            print_dict(self.data(), indent=0)
+        def print_data(self, colors=False):
+            print_dict(self.data(), indent=0, colors=colors)
 
 #print(Hwmon().HW().data())
 #print(Hwmon().HW().print_data())

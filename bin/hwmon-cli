@@ -32,22 +32,22 @@ def main():
 		elif o == '-m' or o == '--memory':
 			print('\033[1;32mMEMORY:\033[00m')
 			memory = Hwmon.MEM()
-			memory.print_data()
+			memory.print_data(colors=True)
 			print('\n')
 		elif o == '-b' or o == '--bios':
 			print('\033[1;32mBIOS:\033[00m')
 			bios = Hwmon.BIOS()
-			bios.print_data()
+			bios.print_data(colors=True)
 			print('\n')
 		elif o == '-n' or o == '--network':
 			print('\033[1;32mNETWORK:\033[00m')
 			net = Hwmon.NET()
-			net.print_data()
+			net.print_data(colors=True)
 			print('\n')
 		elif o == '-s' or o == '--sensors':
 			print('\033[1;32mSENSORS:\033[00m')
 			sensors = Hwmon.HW()
-			sensors.print_data()
+			sensors.print_data(colors=True)
 			print('\n')
 		elif o == '--usb':
 			print('\033[1;32mUSB:\033[00m')

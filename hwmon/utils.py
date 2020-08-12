@@ -1,7 +1,17 @@
 import subprocess
 import warnings
 
-def print_dict(dictionary, previous='', indent=0):
+term_colors = [
+    '\033[1;31m', #red,
+    '\033[1;32m', #green,
+    '\033[1;33m', #yellow,
+    '\033[1;34m', #blue,
+    '\033[1;35m', #purple,
+    '\033[1;36m', #cian,
+]
+last_color = 0
+
+def print_dict(dictionary, previous='', indent=0, colors=False):
 
     """
     Description:
@@ -20,16 +30,21 @@ def print_dict(dictionary, previous='', indent=0):
     
     Return:
         None
-    """    
-
+    """
+    global last_color
     if isinstance(dictionary,dict):
         for key in dictionary.keys():
             if isinstance(dictionary[key],dict):
-                print('\t'*indent, key)
-            print_dict(dictionary[key], previous=key, indent=indent+1)
+                if colors:
+                    print('\t'*indent, term_colors[indent]+str(key)+':\033[00m')
+                else:
+                    print('\t'*indent, str(key)+':')
+            print_dict(dictionary[key], previous=key, indent=indent+1, colors=colors)
     else:
-        print('\t'*(indent-1), previous, dictionary)
-
+        if colors:
+            print('\t'*(indent-1), term_colors[indent+1]+str(previous)+':\033[00m', dictionary)
+        else:
+            print('\t'*(indent-1), str(previous)+':', dictionary)
 
 def is_vm():
 
