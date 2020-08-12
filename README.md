@@ -2,11 +2,12 @@
 
 ![](https://github.com/Guillermo-C-A/Hwmon-python/blob/master/HWmon2.png)
 
-**Authors:** bla6 and Guillermo-C-A
+**Authors:**
 
-**Repository:**
-
-[PyPI url](https://pypi.org/project/hwmon/#description)
+| Bla | Son-link | Guillermo-C-A |
+| :-----------: | :-----------: | :-----------: |
+| [![Bla6](https://avatars0.githubusercontent.com/u/15669452?s=200&u=a1b376c4739aee41847b6bb689e60ddc3035d400&v)](https://github.com/bla6-apm)| [![son-link](https://avatars0.githubusercontent.com/u/208409?s=200&u=6682adb4923ec4da56ff95515cb4cb1ac4cf55fa&v)](https://github.com/son-link)|[![Guillermo-C-A](https://avatars2.githubusercontent.com/u/50501108?s=200&u=1d529b0189d724caafb94e29d11798e689c43751&v=4)](https://github.com/Guillermo-C-A)|
+| Backend and distribution | GUI frontend | Backend |
 
 # Install Hwmon
 
@@ -14,32 +15,52 @@
 pip install hwmon
 ```
 
-# New data available 
+# Help us
 
-Now you can get information about the GPU and the BIOS of your computer. For more information, read how to use the new features in this README 
+We are open to new ideas and people who want to improve this project, so feel free to open pull requests or leave us your opinions/problems with the application in [this section](https://github.com/Guillermo-C-A/Hwmon-python/issues).
 
-![](https://github.com/Guillermo-C-A/Hwmon-python/blob/master/rd_data/GPU.png)
+# Disclaimer
+
+The information presented in this library may vary depending on the distribution or kernel being executed, to the point of giving error in certain functions such as GPU. 
+
+In case this happens, inform us of the error so that we can fix the fault :)
+
+Tested and stable kernels:
+
+- 5.8 (Ubuntu 20)
+- 5.4.0.42.46 (Ubuntu 20)
+
+It has also been tested on three different computers with AMD CPU and GPU configurations successfully and stably
+
+# New features 
+
+We are currently working in parallel to develop the interfaces for this library. You can download the terminal interface [this link](https://github.com/Guillermo-C-A/Hwmon-python/tree/script)
+
+In addition, the desktop GUI is in the process of being created.
+
+![](https://github.com/Guillermo-C-A/Hwmon-python/blob/master/rd_data/hwmon-qt_2.png)
 
 ## Motivations to create Hwmon 
 
-Hwmon has been created with the intention of replacing Linux libraries and APIs with which to obtain system information without the need to depend on dependencies outside a standard Linux system, i. e. that nothing needs to be installed. 
+Hwmon has been created with the intention of replacing Linux libraries and APIs which obtain system information without the need to depend on dependencies outside a standard Linux system.
 
 The only requirements for running Hwmon on a system are: 
 
 - The OS is Linux 
-- Have python 3 
+- Have python 3
+- Install hwmon library
 
-Hwmon is also a library developed expressly by and for Python 3 with functions that are easy to understand and operate, which read and synthesize in the same library all the useful information for monitoring a Linux system that can be found in the /ys, /proc and /dev folders. So only the information that the system itself has recorded will be obtained. 
+Hwmon is also a library developed expressly by and for Python 3 with functions that are easy to understand and operate, which read and synthesize in the same library all the useful information for monitoring a Linux system that can be found in the /sys, /proc and /dev folders. So only the information that the system itself has recorded will be obtained. 
 
 ## Why use Hwmon instead of other library? 
 
-As already mentioned, Hwmon does not require any dependencies or programs and is a library created with the standard Python 3 libraries. Which is not the case with other library as they are: 
+As already mentioned, Hwmon does not require any dependencies or programs and is a library created with the standard Python 3 libraries. Which is not the case like other library/software such as: 
 
 - Pysensors
 - lm-sensors
 - psutil
 
-Where you need files and programs to be able to work, so if you're missing some of that, it just doesn't work. They are also heavier solutions in terms of file sizes than Hwmon. 
+Where you need files and other softwares to be able to work, so if you're missing some of that, it just doesn't work. They are also heavier solutions in terms of file sizes than Hwmon. 
 
 ## Is it really a viable alternative to lm-sensors? 
 
@@ -59,15 +80,19 @@ Hwmon is able to extract:
 - Sent and received packet information 
 - USB devices connected to the computer 
 - Disks connected to the computer 
+- BIOS information
+- GPU information
 
 All this information is extracted respectively from the following sites: 
 
-- /sys/class/hwmon
-- /proc/cpuinfo y /proc/stat
-- /proc/meminfo
-- /proc/net/dev
-- /dev/input/by-id
-- /dev/disk/by-id
+- **Sensors:** /sys/class/hwmon
+- **CPU:** /proc/cpuinfo and /proc/stat
+- **RAM:** /proc/meminfo
+- **Network:** /proc/net/dev
+- **USB:** /dev/input/by-id
+- **Disks:** /dev/disk/by-id
+- **GPU**: /sys/class/graphics or /sys/class/drm/card0/device/
+- **BIOS:** /sys/class/dmi/id/
 
 ## How to use and call the library? 
 
@@ -200,11 +225,21 @@ This function will print all the information of the system processor in a tabula
 cpu.print_data()
 ```
 
-     Name AMD Ryzen 5 1400 Quad-Core Processor
-     CPU_usage 14.32
-     cores 4
-     threads 8
-     Average_MHz 1449.3
+    Name AMD Ryzen 5 1400 Quad-Core Processor
+    CPU_usage 26.71
+    cores 4
+    threads 8
+    cpu MHz
+            0 1374.813
+            1 1374.788
+            2 1374.887
+            3 1374.75
+            4 1510.204
+            5 1501.796
+            6 3475.097
+            7 2196.461
+    Max MHz 3800
+    Average_MHz 1772.85
 
 
 ### Get data
@@ -215,14 +250,20 @@ In case we are interested in obtaining the information from the processor instea
 cpu.data()
 ```
 
-
-
-
     {'Name': 'AMD Ryzen 5 1400 Quad-Core Processor',
-     'CPU_usage': 14.32,
+     'CPU_usage': -34.37,
      'cores': '4',
      'threads': '8',
-     'Average_MHz': 1719.68}
+     'cpu MHz': {0: 1374.906,
+        1: 1374.774, 
+        2: 1374.735, 
+        3: 1374.718, 
+        4: 1374.724, 
+        5: 1374.91, 
+        6: 1374.804, 
+        7: 1374.706},
+     'Max MHz': 3800, 
+     'Average_MHz': 1374.78}
 
 
 
