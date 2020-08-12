@@ -15,9 +15,13 @@
 pip install hwmon
 ```
 
+You can also download the latest hwmon version by cloning this repository and using the files that come in the hwmon folder, since the pip version is usually outdated :(
+
 # Help us
 
 We are open to new ideas and people who want to improve this project, so feel free to open pull requests or leave us your opinions/problems with the application in [this section](https://github.com/Guillermo-C-A/Hwmon-python/issues).
+
+**Don't forget to give a star to this repository :D**
 
 # Disclaimer
 
