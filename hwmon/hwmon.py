@@ -51,6 +51,8 @@ class Hwmon():
                 return label_name, str(int(value) / 1000) + ' a'
             elif file_.lower().startswith('power'):
                 return label_name, str(int(value) / 1000000) + ' w'
+            elif file_.lower().startswith('freq'):
+                return label_name, str(int(value) / 1000000) + ' MHz'
 
         def data(self):
 
@@ -84,7 +86,25 @@ class Hwmon():
 
                     except Exception:
                         pass
-
+                
+                estimate_w = []
+             
+                for sensor in data.keys():
+                    
+                    for value in data[sensor].keys():
+                        
+                        if data[sensor][value].endswith("v"):
+                            
+                            try:
+                                v = float(data[sensor][value].split(" ")[0])
+                                i = float(data[sensor]["I" + value[1:]].split(" ")[0])
+                                estimate_w.append([sensor, "W" + value[1:] + "*", round(v*i,4)])
+                            except Exception:
+                                pass
+                
+                for value in estimate_w:
+                    data[value[0]][value[1]] = str(value[2]) + " w"
+                
             return data
 
         def print_data(self):
@@ -288,7 +308,7 @@ class Hwmon():
     class GPU():
 
         def __init__(self):
-            self.master_path = "/sys/class/graphics/"
+            self.master_path = ["/sys/class/graphics/", "/sys/class/drm/card0/device/"]
 
         def convert_to_mb(self, byte_size):
             """
@@ -327,46 +347,65 @@ class Hwmon():
             return size_to_return + measure
 
         def data(self):
-
-            data = dict()
-
-            folders = os.listdir(self.master_path)
-
-            for folder in folders:
-
-                sub_folder_path = os.path.join(self.master_path, folder)
-
-                files = os.listdir(sub_folder_path)
-
-                if "name" in files:
-
-                    name = open(os.path.join(sub_folder_path, 'name'), 'r')
-                    name_key = name.read().strip()
-                    name.close()
-
-                    data[name_key] = dict()
-
-                    data[name_key]["Name"] = subprocess.getstatusoutput("lspci -v | egrep -i --color 'vga|3d|2d'")[1].split(":")[2]
-                    data[name_key]["Resolution"] = subprocess.getstatusoutput("xdpyinfo  | grep 'dimensions:'")[1].split(":")[1].replace("    ","")
-
-                    sub_folder_path = os.path.join(self.master_path, folder, "device")
-                    files = os.listdir(sub_folder_path)
-
-                    for file in files:
-
-                        if "current_link" in file or "busy" in file or "mem_" in file or "bios" in file:
-
-                            data_file = open(os.path.join(sub_folder_path, file), 'r')
-                            data_read = data_file.read().strip()
-                            data_file.close()
-                            
-                            if "mem_" in file and "percent" not in file:
-                                data_read = self.convert_to_mb(int(data_read))
-                            if "percent" in file:
-                                data_read = data_read + " %"
-                            data[name_key][file] = data_read
             
-            return data
+            for master_path in self.master_path:
+                
+                try: 
+                    data = dict()
+
+                    folders = os.listdir(master_path)
+
+                    for folder in folders:
+
+                        sub_folder_path = os.path.join(master_path, folder)
+
+                        files = os.listdir(sub_folder_path)
+
+                        if "name" in files:
+
+                            name = open(os.path.join(sub_folder_path, 'name'), 'r')
+                            name_key = name.read().strip()
+                            name.close()
+
+                            data[name_key] = dict()
+                            
+                            gpu_name = subprocess.getstatusoutput("lspci -v | egrep -i --color 'vga|3d|2d'")[1]
+                            
+                            for gpu_call in gpu_name:
+                                
+                                if "VGA" in gpu_call:
+                                    data[name_key]["Name"] = gpu_call.split(":")[2]
+                                    
+                            data[name_key]["Resolution"] = subprocess.getstatusoutput("xdpyinfo  | grep 'dimensions:'")[1].split(":")[1].replace("    ","")
+
+                            sub_folder_path = os.path.join(master_path, folder, "device")
+                            files = os.listdir(sub_folder_path)
+
+                            for file in files:
+
+                                if "current_link" in file or "busy" in file or "mem_" in file or "bios" in file:
+
+                                    data_file = open(os.path.join(sub_folder_path, file), 'r')
+                                    data_read = data_file.read().strip()
+                                    data_file.close()
+                                    
+                                    try:
+                                        if "mem_" in file and "percent" not in file:
+                                            
+                                                data_read = self.convert_to_mb(int(data_read))
+
+                                        if "percent" in file:
+                                            data_read = data_read + " %"
+                                        data[name_key][file] = data_read
+                                        
+                                    except Exception:
+                                        pass
+                    
+                    return data
+                
+                except Exception as e:
+                    print(e)
+                    pass
 
         def print_data(self):
             print_dict(self.data(), indent=0)
