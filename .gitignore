@@ -4,5 +4,7 @@
 build/*
 *.txt
 dist/*
-hwmon/__pycache__/
+hwmon/__pycache__/*
 bin/__pycache__/
+hwmon.egg-info/*
+bin/hwmon

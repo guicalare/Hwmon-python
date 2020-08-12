@@ -5,7 +5,7 @@ from hwmon import Hwmon
 
 def main():
 	try:
-		opts, args = getopt.getopt(sys.argv[1:], 'cmbnsudhv', ['cpu', 'memory', 'bios', 'network', 'sensors', 'usb', 'disk', 'help', 'version'])
+		opts, args = getopt.getopt(sys.argv[1:], 'cgmbnsudhv', ['cpu', 'gpu', 'memory', 'bios', 'network', 'sensors', 'usb', 'disk', 'help', 'version'])
 	except getopt.GetoptError as err:
 		print(err)
 		usage()
@@ -22,7 +22,12 @@ def main():
 		if o == '-c' or o == '--cpu':
 			print('\033[1;32mCPU:\033[00m')
 			cpu = Hwmon.CPU()
-			cpu.print_data()
+			cpu.print_data(colors=True)
+			print('\n')
+		elif o == '-g' or o == '--gpu':
+			print('\033[1;32mGPU:\033[00m')
+			cpu = Hwmon.GPU()
+			cpu.print_data(colors=True)
 			print('\n')
 		elif o == '-m' or o == '--memory':
 			print('\033[1;32mMEMORY:\033[00m')
@@ -58,14 +63,17 @@ def main():
 def usage():
 	print('Hwmon 0.9')
 	print('How to use:')
-	print(sys.argv[0] + ' [--cpu] [--gpu] [--memory] [--bios] [--network] [--sensors] [--usb] [--disk]')
-	print('--cpu: Show info of the CPU.')
-	print('--memory: Show info of the memory (RAM).')
-	print('--bios: Show info of the bios.')
-	print('--network: Show info of your network connection(s).')
-	print('--sensors: Show info of the sensors avaliable, such CPU and GPU.')
-	print('--usb: Show all devices connected on the USB ports.')
-	print('--disk: Show info of all internal hard disks/SSD.')
+	print(sys.argv[0] + ' [-c|--cpu] [-g|--gpu] [-m|--memory] [-b|--bios] [-n|--network] [-s|--sensors] [-u|--usb] [-d|--disk] [-h|--help] [-v|--version]')
+	print('-c | --cpu: Show info of the CPU.')
+	print('-g | --gpu: Show info of the CPU.')
+	print('-m | --memory: Show info of the memory (RAM).')
+	print('-b | --bios: Show info of the bios.')
+	print('-n | --network: Show info of your network connection(s).')
+	print('-s | --sensors: Show info of the sensors avaliable, such CPU and GPU.')
+	print('-u | --usb: Show all devices connected on the USB ports.')
+	print('-d | --disk: Show info of all internal hard disks/SSD.')
+	print('-h | --help: Show this help.')
+	print('-v | --version: Show the version of the script.')
 	exit()
 
 def version():
