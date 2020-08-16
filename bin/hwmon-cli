@@ -1,0 +1,84 @@
+#!/usr/bin/env python
+
+import sys, getopt
+from hwmon import Hwmon
+
+def main():
+	try:
+		opts, args = getopt.getopt(sys.argv[1:], 'cgmbnsudhv', ['cpu', 'gpu', 'memory', 'bios', 'network', 'sensors', 'usb', 'disk', 'help', 'version'])
+	except getopt.GetoptError as err:
+		print(err)
+		usage()
+		sys.exit(2)
+	if len(opts) == 0:
+		usage()
+	
+	if any('-h' in opt for opt in opts) or any('--help' in opt for opt in opts):
+		usage()
+	if any('-v' in opt for opt in opts) or any('--version' in opt for opt in opts):
+		version()
+	
+	for o, a in opts:
+		if o == '-c' or o == '--cpu':
+			print('\033[1;32mCPU:\033[00m')
+			cpu = Hwmon.CPU()
+			cpu.print_data(colors=True)
+			print('\n')
+		elif o == '-g' or o == '--gpu':
+			print('\033[1;32mGPU:\033[00m')
+			cpu = Hwmon.GPU()
+			cpu.print_data(colors=True)
+			print('\n')
+		elif o == '-m' or o == '--memory':
+			print('\033[1;32mMEMORY:\033[00m')
+			memory = Hwmon.MEM()
+			memory.print_data(colors=True)
+			print('\n')
+		elif o == '-b' or o == '--bios':
+			print('\033[1;32mBIOS:\033[00m')
+			bios = Hwmon.BIOS()
+			bios.print_data(colors=True)
+			print('\n')
+		elif o == '-n' or o == '--network':
+			print('\033[1;32mNETWORK:\033[00m')
+			net = Hwmon.NET()
+			net.print_data(colors=True)
+			print('\n')
+		elif o == '-s' or o == '--sensors':
+			print('\033[1;32mSENSORS:\033[00m')
+			sensors = Hwmon.HW()
+			sensors.print_data(colors=True)
+			print('\n')
+		elif o == '--usb':
+			print('\033[1;32mUSB:\033[00m')
+			usb = Hwmon.USB()
+			usb.print_data()
+			print('\n')
+		elif o == '-d' or o == '--disk':
+			print('\033[1;32mDISK(S):\033[00m')
+			disk = Hwmon.DISK()
+			disk.print_data()
+			print('\n')
+
+def usage():
+	print('Hwmon 0.9')
+	print('How to use:')
+	print(sys.argv[0] + ' [-c|--cpu] [-g|--gpu] [-m|--memory] [-b|--bios] [-n|--network] [-s|--sensors] [-u|--usb] [-d|--disk] [-h|--help] [-v|--version]')
+	print('-c | --cpu: Show info of the CPU.')
+	print('-g | --gpu: Show info of the CPU.')
+	print('-m | --memory: Show info of the memory (RAM).')
+	print('-b | --bios: Show info of the bios.')
+	print('-n | --network: Show info of your network connection(s).')
+	print('-s | --sensors: Show info of the sensors avaliable, such CPU and GPU.')
+	print('-u | --usb: Show all devices connected on the USB ports.')
+	print('-d | --disk: Show info of all internal hard disks/SSD.')
+	print('-h | --help: Show this help.')
+	print('-v | --version: Show the version of the script.')
+	exit()
+
+def version():
+	print('Hwmon 0.9')
+	exit()
+
+if __name__ == "__main__":
+    main()

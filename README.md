@@ -11,12 +11,83 @@
 
 # Install Hwmon
 
+## Check the python version in Linux
+
+Before installing or running Hwmon it is essential to have a system with GNU/Linux along with python 3. To see the version of Python you have installed on your system you have to execute these sentences in the terminal:
+
 ```
-pip install hwmon
+python --version
 ```
 
-You can also download the latest hwmon version by cloning this repository and using the files that come in the hwmon folder, since the pip version is usually outdated :(
+or
 
+```
+python3 --version
+```
+
+And you will keep the name (without -version) that returns python 3.xx. Where de xx can be any number (ex: 3.5, 3.8, etc...).
+
+![](https://github.com/Guillermo-C-A/Hwmon-python/blob/master/rd_data/hpy_ver.png)
+
+
+In this case, we will keep the name "python3", since it is the "executable" of version 3 for python.
+
+## Install python-pip
+
+To install Hwmon you can choose to do it in an automatic or manual way, but it is recommended to do the manual installation since it is the most updated version compared to the automatic version.
+
+Regardless of whether it is manual or not, you must have pip or pip3 installed. Depending on the name where the python3 version is hosted, it will have to be installed in one way or another.
+
+```
+python3 -> sudo apt install python3-pip
+python -> sudo apt install python-pip
+```
+
+## Install Hwmon
+
+If you want to install the automatic version, you will only have to execute this sentence:
+
+```
+python3 -> pip3 install hwmon
+python -> pip install hwmon
+```
+
+In case it is manual, you will have to follow these steps:
+
+1. Installing git if you don't have it installed
+    ```
+    sudo apt install git-all
+    ```
+2. Execute these sentences at the terminal
+    ```
+    git clone https://github.com/Guillermo-C-A/Hwmon-python.git
+    cd Hwmon-python
+    python3 -> pip3 install .
+    python -> pip install .
+    ```
+
+    Ex:
+
+    ![](https://github.com/Guillermo-C-A/Hwmon-python/blob/master/rd_data/tuto.png)
+3. Use our terminal interface to see everything our library has to offer :)
+    ```
+    cd bin
+    python3 -> python3 hwmon-cli --help
+    python -> python hwmon-cli --help
+    ```
+
+    Ex:
+    ```
+    python3 -> python3 hwmon-cli --sensors
+    python -> python hwmon-cli --sensors
+    ```
+    ![](https://github.com/Guillermo-C-A/Hwmon-python/blob/master/rd_data/cli-ex.png)
+
+    More examples:
+    ```
+    python3 -> python3 hwmon-cli --cpu --gpu --sensors
+    python -> python hwmon-cli --cpu --gpu --sensors
+    ```  
 # Help us
 
 We are open to new ideas and people who want to improve this project, so feel free to open pull requests or leave us your opinions/problems with the application in [this section](https://github.com/Guillermo-C-A/Hwmon-python/issues).

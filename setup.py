@@ -13,7 +13,7 @@ with open("README.md", "r") as fh:
 setup(
     name='hwmon',
     packages=['hwmon'],
-    version='0.9',
+    version='repo',
     license='gpl-3.0',
     description='Hwmon is a collection of Python 3 scripts which are a native Python solution for obtaining '
                 'information from Linux system sensors.',
