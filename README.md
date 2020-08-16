@@ -27,7 +27,7 @@ python3 --version
 
 And you will keep the name (without -version) that returns python 3.xx. Where de xx can be any number (ex: 3.5, 3.8, etc...).
 
-![](https://github.com/Guillermo-C-A/Hwmon-python/blob/master/rd_data/hpy_ver.png)
+![](https://github.com/Guillermo-C-A/Hwmon-python/blob/master/rd_data/py_ver.png)
 
 
 In this case, we will keep the name "python3", since it is the "executable" of version 3 for python.
