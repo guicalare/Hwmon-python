@@ -159,7 +159,23 @@ class Hwmon():
             info = {'Name': '', 'CPU_usage': round(self.cpu_usage(), 2),
                     'cores': '', 'threads': '', 'cpu MHz':{}
                     }
-            info["Max MHz"] = int(subprocess.getstatusoutput(f"lscpu | grep 'CPU MHz'")[1].split("\n")[1].split(":")[1].replace("                        ","").split(",")[0])
+            try:
+                # Try to get the name in spanish
+                info["Max MHz"] = int(float(subprocess.getstatusoutput(f"lscpu | grep 'CPU MHz máx'")[1].split()[-1].replace(",",".")))
+            except IndexError:
+                # Get the english name
+                info["Max MHz"] = int(float(subprocess.getstatusoutput(f"lscpu | grep 'CPU MHz max'")[1].split()[-1].replace(",",".")))
+            except:
+                info["Max MHz"] = None
+            
+            try:
+                # Try to get the name in spanish
+                info["Min MHz"] = int(float(subprocess.getstatusoutput(f"lscpu | grep 'CPU MHz mín'")[1].split()[-1].replace(",",".")))
+            except IndexError:
+                # Get the english name
+                info["Min MHz"] = int(float(subprocess.getstatusoutput(f"lscpu | grep 'CPU MHz min'")[1].split()[-1].replace(",",".")))
+            except:
+                info["Min MHz"] = None
 
             for line in data:
 
