@@ -86,25 +86,25 @@ class Hwmon():
 
                     except Exception:
                         pass
-                
+
                 estimate_w = []
-             
+
                 for sensor in data.keys():
-                    
+
                     for value in data[sensor].keys():
-                        
+
                         if data[sensor][value].endswith("v"):
-                            
+
                             try:
                                 v = float(data[sensor][value].split(" ")[0])
                                 i = float(data[sensor]["I" + value[1:]].split(" ")[0])
                                 estimate_w.append([sensor, "W" + value[1:] + "*", round(v*i,4)])
                             except Exception:
                                 pass
-                
+
                 for value in estimate_w:
                     data[value[0]][value[1]] = str(value[2]) + " w"
-                
+
             return data
 
         def print_data(self, colors=False):
@@ -129,7 +129,7 @@ class Hwmon():
 
         # See https://rosettacode.org/wiki/Linux_CPU_utilization#Python
         def cpu_usage(self):
-            
+
             try:
                 file = open("cpu.txt", "r")
                 data = file.read().strip().split(";")
@@ -137,14 +137,14 @@ class Hwmon():
                 file.close()
             except Exception:
                 last_idle, last_total = 0, 0
-            
+
             with open('/proc/stat') as f:
                 fields = [float(column) for column in f.readline().strip().split()[1:]]
             idle, total = fields[3], sum(fields)
             idle_delta, total_delta = idle - last_idle, total - last_total
             last_idle, last_total = idle, total
             utilisation = 100.0 * (1.0 - idle_delta / total_delta)
-            
+
             file = open("cpu.txt", "w")
             file.write(str(last_idle) + ";" + str(last_total))
             file.close()
@@ -164,16 +164,16 @@ class Hwmon():
                 info["Max MHz"] = int(float(subprocess.getstatusoutput(f"lscpu | grep 'CPU MHz máx'")[1].split()[-1].replace(",",".")))
             except IndexError:
                 # Get the english name
-                info["Max MHz"] = int(float(subprocess.getstatusoutput(f"lscpu | grep 'CPU MHz max'")[1].split()[-1].replace(",",".")))
+                info["Max MHz"] = int(float(subprocess.getstatusoutput("lscpu | grep 'CPU max MHz'")[1].split()[-1].replace(",", ".")))
             except:
                 info["Max MHz"] = None
-            
+
             try:
                 # Try to get the name in spanish
                 info["Min MHz"] = int(float(subprocess.getstatusoutput(f"lscpu | grep 'CPU MHz mín'")[1].split()[-1].replace(",",".")))
             except IndexError:
                 # Get the english name
-                info["Min MHz"] = int(float(subprocess.getstatusoutput(f"lscpu | grep 'CPU MHz min'")[1].split()[-1].replace(",",".")))
+                info["Min MHz"] = int(float(subprocess.getstatusoutput("lscpu | grep 'CPU min MHz'")[1].split()[-1].replace(",", ".")))
             except:
                 info["Min MHz"] = None
 
@@ -363,10 +363,10 @@ class Hwmon():
             return size_to_return + measure
 
         def data(self):
-            
+
             for master_path in self.master_path:
-                
-                try: 
+
+                try:
                     data = dict()
 
                     folders = os.listdir(master_path)
@@ -384,14 +384,14 @@ class Hwmon():
                             name.close()
 
                             data[name_key] = dict()
-                            
+
                             gpu_name = subprocess.getstatusoutput("lspci -v | egrep -i --color 'vga|3d|2d'")[1]
-                            
+
                             for gpu_call in gpu_name:
-                                
+
                                 if "VGA" in gpu_call:
                                     data[name_key]["Name"] = gpu_call.split(":")[2]
-                                    
+
                             data[name_key]["Resolution"] = subprocess.getstatusoutput("xdpyinfo  | grep 'dimensions:'")[1].split(":")[1].replace("    ","")
 
                             sub_folder_path = os.path.join(master_path, folder, "device")
@@ -404,21 +404,21 @@ class Hwmon():
                                     data_file = open(os.path.join(sub_folder_path, file), 'r')
                                     data_read = data_file.read().strip()
                                     data_file.close()
-                                    
+
                                     try:
                                         if "mem_" in file and "percent" not in file:
-                                            
+
                                                 data_read = self.convert_to_mb(int(data_read))
 
                                         if "percent" in file:
                                             data_read = data_read + " %"
                                         data[name_key][file] = data_read
-                                        
+
                                     except Exception:
                                         pass
-                    
+
                     return data
-                
+
                 except Exception as e:
                     print(e)
                     pass
@@ -431,7 +431,7 @@ class Hwmon():
         def __init__(self):
 
             self.master_path = "/sys/class/dmi/id/"
-        
+
         def data(self):
 
             data = dict()
@@ -445,12 +445,12 @@ class Hwmon():
                         data_file = open(os.path.join(self.master_path, file), 'r')
                         data_read = data_file.read().strip()
                         data_file.close()
-                        
+
                         if "To Be Filled By O.E.M." not in data_read:
                             data[file] = data_read
                     except Exception:
                         pass
-            
+
             return data
 
         def print_data(self, colors=False):
